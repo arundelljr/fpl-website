@@ -1,0 +1,10 @@
+[theme]
+
+base = "light"
+
+primaryColor = "#04F5FF"                    # interactive CTAs and selections
+backgroundColor = "#360D3A"                 # main content background
+secondaryBackgroundColor = "#1CA840"      # sidebar / widget background
+dataframeHeaderBackgroundColor = "#963CFF"  # df header colour
+textColor = "#FFFFFF"                       # main text
+font = "sans serif"
