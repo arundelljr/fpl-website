@@ -22,9 +22,10 @@ if 'last_refreshed' not in st.session_state:
 
 # Refresh Cache button - increments cache_version and reruns the app
 if st.button("Refresh Cache"):
-    st.session_state.cache_version += 1
-    st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    st.rerun()
+    # st.session_state.cache_version += 1
+    # st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # st.rerun()
+    pass
 
 # reuse HTTP session across reruns
 @st.cache_resource
