@@ -9,4 +9,4 @@ import streamlit as st
 from get_data import fig
 
 # Show league tracker in Streamlit
-st.pyplot(fig, width=1550)
+st.pyplot(fig, width=1000)
