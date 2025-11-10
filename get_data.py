@@ -166,6 +166,32 @@ for player, team_id in player_team_ids.items():
 running_total_history_df = pd.DataFrame(running_total_history, columns=running_total_history.keys())
 gameweek_player_rank_df = running_total_history_df.rank(axis=1, method='min', ascending=False).astype(int)
 
+# Plotting
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.invert_yaxis()
+
+for user in gameweek_player_rank_df.columns:
+    ranks = gameweek_player_rank_df[user].values
+    ax.plot(gameweek_player_rank_df.index, ranks, marker='o', label=user)
+
+    # Label the last point
+    last_x = gameweek_player_rank_df.index[-1] + 0.65
+    last_y = ranks[-1]
+    ax.text(last_x, last_y, user, fontsize=10, va='center', ha='left')
+
+# Set y-axis ticks
+max_rank = gameweek_player_rank_df.values.max()
+ax.set_yticks(range(1, max_rank + 1))
+
+# Labels and title
+ax.set_title('League Tracker')
+ax.set_xlabel('Gameweek')
+ax.set_ylabel('Rank')
+ax.grid(True)
+fig.tight_layout()
+
+st.pyplot(fig, width=1000)
+
 
 # Chip record
 gameweeks_so_far = len(player_point_history_df)
