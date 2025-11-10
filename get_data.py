@@ -146,10 +146,18 @@ form_proj_df = form_proj_df[['name', 'final_score_projection']].sort_values(by='
 form_proj_df.index = range(1, len(form_proj_df) + 1)
 
 
-# League tracker
-# Cumulative scores and ranks
-cum_league_table_df = np.cumsum(player_point_history_df)
-gameweek_player_rank_df = cum_league_table_df.rank(axis=1, method='min', ascending=False).astype(int)
+# historic league table
+# for every person take the total points from the gameweek history
+running_total_history = {}
+for player, team_id in player_team_ids.items():
+    response = requests.get(f"https://fantasy.premierleague.com/api/entry/{team_id}/history/")
+    gw_history = response.json()
+    total_points = {gw['event'] : gw['total_points'] for gw in gw_history['current']}
+    running_total_history[f'{player}'] = total_points
+
+running_total_history_df = pd.DataFrame(running_total_history, columns=running_total_history.keys())
+gameweek_player_rank_df = running_total_history_df.rank(axis=1, method='min', ascending=False).astype(int)
+
 
 # Plotting
 fig, ax = plt.subplots(figsize=(8, 5))
@@ -160,7 +168,7 @@ for user in gameweek_player_rank_df.columns:
     ax.plot(gameweek_player_rank_df.index, ranks, marker='o', label=user)
 
     # Label the last point
-    last_x = gameweek_player_rank_df.index[-1] + 0.5
+    last_x = gameweek_player_rank_df.index[-1] + 0.65
     last_y = ranks[-1]
     ax.text(last_x, last_y, user, fontsize=10, va='center', ha='left')
 
