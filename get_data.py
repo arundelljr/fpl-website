@@ -10,6 +10,11 @@ import matplotlib.pyplot as plt
 # wide layout
 st.set_page_config(layout="wide")
 
+st.markdown("""
+            # Welcome to **12blokesandashedloadoffpl**
+            """)
+
+
 #################
 #    Caching    #
 #################
@@ -49,11 +54,6 @@ def fetch_json_cached(url: str, cache_version: int):
     resp.raise_for_status()
     return resp.json()
 
-
-
-f"""
-Welcome to 12blokesandashedloadofFPL.
-"""
 
 #################
 # Fetching data #
