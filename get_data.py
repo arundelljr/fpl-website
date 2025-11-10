@@ -37,6 +37,7 @@ def get_session():
 # cached JSON fetcher with long TTL (7 days = 604800 seconds)
 @st.cache_data(ttl=604800)
 def fetch_json_cached(url: str, cache_version: int):
+    print("fetching", url, "v", cache_version)
     session = get_session()
     resp = session.get(url, timeout=10)
     resp.raise_for_status()
