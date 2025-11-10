@@ -6,7 +6,11 @@ import streamlit as st
 # import numpy as np
 # import matplotlib.pyplot as plt
 
-from get_data import league_table_df, form_df, form_proj_df
+# from get_data import league_table_df, form_df, form_proj_df
+
+league_table_df = st.session_state.get('league_table_df')
+form_df = st.session_state.get('form_df')
+form_proj_df = st.session_state.get('form_proj_df')
 
 col1, col2, col3 = st.columns(3)
 

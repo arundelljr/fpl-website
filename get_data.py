@@ -84,13 +84,13 @@ form_df = (
     .sort_values(by='last_five_gameweeks', ascending=False)
 )
 form_df.index = range(1, len(form_df) + 1)
-
+st.session_state['form_df'] = form_df
 
 league_table = {player['rank_sort'] : [player['player_name'], player['total']] for player in league_info['standings']['results']}
 
 league_table_df = pd.DataFrame(league_table, index=['name', 'total']).T
 league_table_df.index = range(1, len(league_table_df) + 1)
-
+st.session_state['league_table_df'] = league_table_df
 
 # Highest Gameweek Score
 max_scores = player_point_history_df.max()
@@ -103,7 +103,7 @@ max_scores_df = pd.DataFrame({
 max_scores_df = max_scores_df.reset_index().rename(columns={"index": "player_name"})
 max_scores_df.sort_values(by='max_score', ascending=False, inplace=True)
 max_scores_df.index = range(1, len(max_scores_df) + 1)
-
+st.session_state['max_scores_df'] = max_scores_df
 
 # Highest Total left on the bench
 gameweeks_so_far = len(player_point_history_df)
@@ -127,7 +127,7 @@ total_bench_scores = all_bench_history_df.sum().sort_values(ascending=False)
 total_bench_scores_df = pd.DataFrame(total_bench_scores).rename(columns={0 : 'bench_score'})
 total_bench_scores_df = total_bench_scores_df.reset_index().rename(columns={"index": "player_name"})
 total_bench_scores_df.index = range(1, len(total_bench_scores_df) + 1)
-
+st.session_state['total_bench_scores_df'] = total_bench_scores_df
 
 # Highest Bench Scores
 max_scores = all_bench_history_df.max()
@@ -141,7 +141,7 @@ max_bench_scores_df = pd.DataFrame({
 max_bench_scores_df = max_bench_scores_df.reset_index().rename(columns={"index": "player_name"})
 max_bench_scores_df.sort_values(by='max_bench_score', ascending=False, inplace=True)
 max_bench_scores_df.index = range(1, len(max_bench_scores_df) + 1)
-
+st.session_state['max_bench_scores_df'] = max_bench_scores_df
 
 # Projections based on form scores carried on for rest of season
 gameweeks_left = 38 - gameweeks_so_far
@@ -152,6 +152,7 @@ form_proj_df['form_points_per_GW'] = (form_proj_df['last_five_gameweeks']/5).ast
 form_proj_df['final_score_projection'] = form_proj_df.total + form_proj_df.form_points_per_GW*gameweeks_left
 form_proj_df = form_proj_df[['name', 'final_score_projection']].sort_values(by='final_score_projection', ascending=False)
 form_proj_df.index = range(1, len(form_proj_df) + 1)
+st.session_state['form_proj_df'] = form_proj_df
 
 
 # historic league table
@@ -165,33 +166,7 @@ for player, team_id in player_team_ids.items():
 
 running_total_history_df = pd.DataFrame(running_total_history, columns=running_total_history.keys())
 running_rank_df = running_total_history_df.rank(axis=1, method='min', ascending=False).astype(int)
-
-# # Plotting
-# fig, ax = plt.subplots(figsize=(8, 5))
-# ax.invert_yaxis()
-
-# for user in running_rank_df.columns:
-#     ranks = running_rank_df[user].values
-#     ax.plot(running_rank_df.index, ranks, marker='o', label=user)
-
-#     # Label the last point
-#     last_x = running_rank_df.index[-1] + 0.65
-#     last_y = ranks[-1]
-#     ax.text(last_x, last_y, user, fontsize=10, va='center', ha='left')
-
-# # Set y-axis ticks
-# max_rank = running_rank_df.values.max()
-# ax.set_yticks(range(1, max_rank + 1))
-
-# # Labels and title
-# ax.set_title('League Tracker')
-# ax.set_xlabel('Gameweek')
-# ax.set_ylabel('Rank')
-# ax.grid(True)
-# fig.tight_layout()
-
-# st.pyplot(fig, width=1000)
-
+st.session_state['running_rank_df'] = running_rank_df
 
 # Chip record
 gameweeks_so_far = len(player_point_history_df)
@@ -214,3 +189,4 @@ league_chip_record_df['total_chip_score'] = league_chip_record_df.sum(axis=1)
 
 league_chip_record_df = league_chip_record_df.sort_values(by='total_chip_score', ascending=False).reset_index().rename(columns={"index": "player_name"})
 league_chip_record_df.index = range(1, len(league_chip_record_df) + 1)
+st.session_state['league_chip_record_df'] = league_chip_record_df

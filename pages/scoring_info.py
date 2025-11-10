@@ -6,7 +6,12 @@ import streamlit as st
 # import numpy as np
 # import matplotlib.pyplot as plt
 
-from get_data import max_scores_df, league_chip_record_df, total_bench_scores_df, max_bench_scores_df
+# from get_data import max_scores_df, league_chip_record_df, total_bench_scores_df, max_bench_scores_df
+
+max_scores_df = st.session_state.get('max_scores_df')
+league_chip_record_df = st.session_state.get('league_chip_record_df')
+total_bench_scores_df = st.session_state.get('total_bench_scores_df')
+max_bench_scores_df = st.session_state.get('max_bench_scores_df')
 
 col1, col2, col3 = st.columns(3)
 

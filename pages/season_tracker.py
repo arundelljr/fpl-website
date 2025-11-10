@@ -6,7 +6,9 @@ import streamlit as st
 # import numpy as np
 import matplotlib.pyplot as plt
 
-from get_data import running_rank_df
+# from get_data import running_rank_df
+
+running_rank_df = st.session_state.get('running_rank_df')
 
 # Plotting
 fig, ax = plt.subplots(figsize=(8, 5))
