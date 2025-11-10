@@ -36,17 +36,18 @@ def fetch_json_cached(url: str, cache_version: int):
     return resp.json()
 
 if st.button("Refresh Cache"):
-    # # update visible state
-    # st.session_state.cache_version += 1
-    # st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # update visible state
+    st.session_state.cache_version += 1
+    st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # # clear cached data and resources on this process/instance
-    # st.cache_data.clear()        # clears functions decorated with @st.cache_data
-    # st.cache_resource.clear()    # clears functions decorated with @st.cache_resource
+    # clear cached data and resources on this process/instance
+    st.cache_data.clear()        # clears functions decorated with @st.cache_data
+    st.cache_resource.clear()    # clears functions decorated with @st.cache_resource
 
-    # # force the app to rerun immediately with cleared caches
-    # st.rerun()
+    # force the app to rerun immediately with cleared caches
     fetch_json_cached.clear()
+    st.rerun()
+
 
 f"""
 Welcome to 12blokesandashedloadofFPL.
