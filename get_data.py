@@ -154,7 +154,7 @@ form_proj_df.index = range(1, len(form_proj_df) + 1)
 # for every person take the total points from the gameweek history
 running_total_history = {}
 for player, team_id in player_team_ids.items():
-    response = requests.get(f"https://fantasy.premierleague.com/api/entry/{team_id}/history/")
+    response = fetch_json_cached(f"https://fantasy.premierleague.com/api/entry/{team_id}/history/", st.session_state.cache_version)
     gw_history = response.json()
     total_points = {gw['event'] : gw['total_points'] for gw in gw_history['current']}
     running_total_history[f'{player}'] = total_points
