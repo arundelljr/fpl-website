@@ -155,7 +155,7 @@ form_proj_df.index = range(1, len(form_proj_df) + 1)
 running_total_history = {}
 for player, team_id in player_team_ids.items():
     response = fetch_json_cached(f"https://fantasy.premierleague.com/api/entry/{team_id}/history/", st.session_state.cache_version)
-    gw_history = response.json()
+    gw_history = response
     total_points = {gw['event'] : gw['total_points'] for gw in gw_history['current']}
     running_total_history[f'{player}'] = total_points
 
