@@ -19,17 +19,6 @@ if 'cache_version' not in st.session_state:
 if 'last_refreshed' not in st.session_state:
     st.session_state.last_refreshed = None
 
-if st.button("Refresh Cache"):
-    # update visible state
-    st.session_state.cache_version += 1
-    st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    # clear cached data and resources on this process/instance
-    st.cache_data.clear()        # clears functions decorated with @st.cache_data
-    st.cache_resource.clear()    # clears functions decorated with @st.cache_resource
-
-    # force the app to rerun immediately with cleared caches
-    st.rerun()
 
 # reuse HTTP session across reruns
 @st.cache_resource
@@ -45,6 +34,19 @@ def fetch_json_cached(url: str, cache_version: int):
     resp = session.get(url, timeout=10)
     resp.raise_for_status()
     return resp.json()
+
+if st.button("Refresh Cache"):
+    # # update visible state
+    # st.session_state.cache_version += 1
+    # st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # # clear cached data and resources on this process/instance
+    # st.cache_data.clear()        # clears functions decorated with @st.cache_data
+    # st.cache_resource.clear()    # clears functions decorated with @st.cache_resource
+
+    # # force the app to rerun immediately with cleared caches
+    # st.rerun()
+    fetch_json_cached.clear()
 
 f"""
 Welcome to 12blokesandashedloadofFPL.
