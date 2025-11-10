@@ -23,7 +23,7 @@ if 'last_refreshed' not in st.session_state:
 # Refresh Cache button - increments cache_version and reruns the app
 if st.button("Refresh Cache"):
     st.session_state.cache_version += 1
-    st.write(st.session_state.cache_version)
+    st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     st.rerun()
     # pass
 
@@ -44,7 +44,7 @@ def fetch_json_cached(url: str, cache_version: int):
 
 f"""
 Welcome to 12blokesandashedloadofFPL.
-The last refresh occured at {st.session_state.last_refreshed}
+Cache version: {st.session_state.cache_version}
 """
 
 #################
