@@ -190,6 +190,8 @@ ax.set_ylabel('Rank')
 ax.grid(True)
 fig.tight_layout()
 
+st.pyplot(fig, width=1000)
+
 
 # Chip record
 gameweeks_so_far = len(player_point_history_df)
