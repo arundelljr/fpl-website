@@ -20,6 +20,20 @@ if 'last_refreshed' not in st.session_state:
     st.session_state.last_refreshed = None
 
 
+if st.button("Refresh Cache"):
+    # update visible state
+    st.session_state.cache_version += 1
+    st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # # clear cached data and resources on this process/instance
+    # st.cache_data.clear()        # clears functions decorated with @st.cache_data
+    # st.cache_resource.clear()    # clears functions decorated with @st.cache_resource
+
+    # force the app to rerun immediately with cleared caches
+    st.rerun()
+    # pass
+
+
 # reuse HTTP session across reruns
 @st.cache_resource
 def get_session():
@@ -35,23 +49,10 @@ def fetch_json_cached(url: str, cache_version: int):
     resp.raise_for_status()
     return resp.json()
 
-if st.button("Refresh Cache"):
-    # update visible state
-    st.session_state.cache_version += 1
-    st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    # clear cached data and resources on this process/instance
-    st.cache_data.clear()        # clears functions decorated with @st.cache_data
-    st.cache_resource.clear()    # clears functions decorated with @st.cache_resource
-
-    # force the app to rerun immediately with cleared caches
-    fetch_json_cached.clear()
-    st.rerun()
 
 
 f"""
 Welcome to 12blokesandashedloadofFPL.
-The last refresh occured at {st.session_state.last_refreshed}
 """
 
 #################
@@ -164,33 +165,6 @@ for player, team_id in player_team_ids.items():
 
 running_total_history_df = pd.DataFrame(running_total_history, columns=running_total_history.keys())
 gameweek_player_rank_df = running_total_history_df.rank(axis=1, method='min', ascending=False).astype(int)
-
-
-# Plotting
-fig, ax = plt.subplots(figsize=(8, 5))
-ax.invert_yaxis()
-
-for user in gameweek_player_rank_df.columns:
-    ranks = gameweek_player_rank_df[user].values
-    ax.plot(gameweek_player_rank_df.index, ranks, marker='o', label=user)
-
-    # Label the last point
-    last_x = gameweek_player_rank_df.index[-1] + 0.65
-    last_y = ranks[-1]
-    ax.text(last_x, last_y, user, fontsize=10, va='center', ha='left')
-
-# Set y-axis ticks
-max_rank = gameweek_player_rank_df.values.max()
-ax.set_yticks(range(1, max_rank + 1))
-
-# Labels and title
-ax.set_title('League Tracker')
-ax.set_xlabel('Gameweek')
-ax.set_ylabel('Rank')
-ax.grid(True)
-fig.tight_layout()
-
-st.pyplot(fig, width=1000)
 
 
 # Chip record
