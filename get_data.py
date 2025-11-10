@@ -14,18 +14,25 @@ st.set_page_config(layout="wide")
 #    Caching    #
 #################
 
-# session-state version used to force cache invalidation on demand
+# session-state version used for cache invalidation
 if 'cache_version' not in st.session_state:
     st.session_state.cache_version = 0
 if 'last_refreshed' not in st.session_state:
     st.session_state.last_refreshed = None
 
-# Refresh Cache button - increments cache_version and reruns the app
-if st.button("Refresh Cache"):
-    st.session_state.cache_version += 1
-    st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    st.rerun()
-    # pass
+# Display refresh status
+col1, col2 = st.columns([1, 3])
+with col1:
+    if st.button("Refresh Data"):
+        st.session_state.cache_version += 1
+        st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        st.rerun()
+
+with col2:
+    if st.session_state.last_refreshed:
+        st.write(f"Last refreshed: {st.session_state.last_refreshed}")
+    else:
+        st.write("Last refreshed: Never")
 
 # reuse HTTP session across reruns
 @st.cache_resource
@@ -37,7 +44,7 @@ def get_session():
 # cached JSON fetcher with long TTL (7 days = 604800 seconds)
 @st.cache_data(ttl=604800)
 def fetch_json_cached(url: str, cache_version: int):
-    print("fetching", url, "v", cache_version)
+    print(f"Fetching {url} (cache v{cache_version})")
     session = get_session()
     resp = session.get(url, timeout=10)
     resp.raise_for_status()
