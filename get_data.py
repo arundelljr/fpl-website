@@ -25,7 +25,7 @@ with col1:
     if st.button("Refresh Cache"):
         st.session_state.cache_version += 1
         st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        st.experimental_rerun()
+        st.rerun()
 
 with col2:
     if st.session_state.last_refreshed:
