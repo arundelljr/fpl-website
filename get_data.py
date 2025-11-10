@@ -21,17 +21,17 @@ if 'last_refreshed' not in st.session_state:
 
 
 if st.button("Refresh Cache"):
-    # update visible state
-    st.session_state.cache_version += 1
-    st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # # update visible state
+    # st.session_state.cache_version += 1
+    # st.session_state.last_refreshed = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # # clear cached data and resources on this process/instance
-    # st.cache_data.clear()        # clears functions decorated with @st.cache_data
-    # st.cache_resource.clear()    # clears functions decorated with @st.cache_resource
+    # # # clear cached data and resources on this process/instance
+    # # st.cache_data.clear()        # clears functions decorated with @st.cache_data
+    # # st.cache_resource.clear()    # clears functions decorated with @st.cache_resource
 
-    # force the app to rerun immediately with cleared caches
-    st.rerun()
-    # pass
+    # # force the app to rerun immediately with cleared caches
+    # st.rerun()
+    pass
 
 
 # reuse HTTP session across reruns
@@ -164,23 +164,23 @@ for player, team_id in player_team_ids.items():
     running_total_history[f'{player}'] = total_points
 
 running_total_history_df = pd.DataFrame(running_total_history, columns=running_total_history.keys())
-gameweek_player_rank_df = running_total_history_df.rank(axis=1, method='min', ascending=False).astype(int)
+running_rank_df = running_total_history_df.rank(axis=1, method='min', ascending=False).astype(int)
 
 # Plotting
 fig, ax = plt.subplots(figsize=(8, 5))
 ax.invert_yaxis()
 
-for user in gameweek_player_rank_df.columns:
-    ranks = gameweek_player_rank_df[user].values
-    ax.plot(gameweek_player_rank_df.index, ranks, marker='o', label=user)
+for user in running_rank_df.columns:
+    ranks = running_rank_df[user].values
+    ax.plot(running_rank_df.index, ranks, marker='o', label=user)
 
     # Label the last point
-    last_x = gameweek_player_rank_df.index[-1] + 0.65
+    last_x = running_rank_df.index[-1] + 0.65
     last_y = ranks[-1]
     ax.text(last_x, last_y, user, fontsize=10, va='center', ha='left')
 
 # Set y-axis ticks
-max_rank = gameweek_player_rank_df.values.max()
+max_rank = running_rank_df.values.max()
 ax.set_yticks(range(1, max_rank + 1))
 
 # Labels and title
