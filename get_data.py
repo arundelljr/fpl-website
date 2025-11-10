@@ -166,31 +166,31 @@ for player, team_id in player_team_ids.items():
 running_total_history_df = pd.DataFrame(running_total_history, columns=running_total_history.keys())
 running_rank_df = running_total_history_df.rank(axis=1, method='min', ascending=False).astype(int)
 
-# Plotting
-fig, ax = plt.subplots(figsize=(8, 5))
-ax.invert_yaxis()
+# # Plotting
+# fig, ax = plt.subplots(figsize=(8, 5))
+# ax.invert_yaxis()
 
-for user in running_rank_df.columns:
-    ranks = running_rank_df[user].values
-    ax.plot(running_rank_df.index, ranks, marker='o', label=user)
+# for user in running_rank_df.columns:
+#     ranks = running_rank_df[user].values
+#     ax.plot(running_rank_df.index, ranks, marker='o', label=user)
 
-    # Label the last point
-    last_x = running_rank_df.index[-1] + 0.65
-    last_y = ranks[-1]
-    ax.text(last_x, last_y, user, fontsize=10, va='center', ha='left')
+#     # Label the last point
+#     last_x = running_rank_df.index[-1] + 0.65
+#     last_y = ranks[-1]
+#     ax.text(last_x, last_y, user, fontsize=10, va='center', ha='left')
 
-# Set y-axis ticks
-max_rank = running_rank_df.values.max()
-ax.set_yticks(range(1, max_rank + 1))
+# # Set y-axis ticks
+# max_rank = running_rank_df.values.max()
+# ax.set_yticks(range(1, max_rank + 1))
 
-# Labels and title
-ax.set_title('League Tracker')
-ax.set_xlabel('Gameweek')
-ax.set_ylabel('Rank')
-ax.grid(True)
-fig.tight_layout()
+# # Labels and title
+# ax.set_title('League Tracker')
+# ax.set_xlabel('Gameweek')
+# ax.set_ylabel('Rank')
+# ax.grid(True)
+# fig.tight_layout()
 
-st.pyplot(fig, width=1000)
+# st.pyplot(fig, width=1000)
 
 
 # Chip record
