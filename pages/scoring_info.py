@@ -13,7 +13,7 @@ league_chip_record_df = st.session_state.get('league_chip_record_df')
 total_bench_scores_df = st.session_state.get('total_bench_scores_df')
 max_bench_scores_df = st.session_state.get('max_bench_scores_df')
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns([1, 1, 1.2])
 
 with col1:
     # st.write("League Table")
@@ -44,4 +44,4 @@ with col3:
 # st.dataframe(all_bench_history_df)
 
 st.write("Total Chip Scores")
-st.dataframe(league_chip_record_df, width=600, height=460)
+st.dataframe(league_chip_record_df, width=700, height=460)

@@ -187,6 +187,18 @@ for player, team_id in player_team_ids.items():
 league_chip_record_df = pd.DataFrame(league_chip_record).T
 league_chip_record_df['total_chip_score'] = league_chip_record_df.sum(axis=1)
 
-league_chip_record_df = league_chip_record_df.sort_values(by='total_chip_score', ascending=False).reset_index().rename(columns={"index": "player_name"})
+# score per chip used
+# if "columns 2,3,4,5" means 1-based positions, use iloc[:, 1:5]
+cols_slice = league_chip_record_df.iloc[:, 0:4]
+# If some cells contain the string 'None' or empty strings, normalise them to NaN first:
+cols_slice = cols_slice.replace({'None': np.nan})
+# count non-None / non-NaN per row
+count_non_none = cols_slice.notna().sum(axis=1)
+# compute score per chip, avoid division by zero by using NaN for zero counts
+league_chip_record_df['score_per_chip'] = round(
+    league_chip_record_df['total_chip_score'] / count_non_none.replace(0, np.nan), 1
+)
+
+league_chip_record_df = league_chip_record_df.sort_values(by='score_per_chip', ascending=False).reset_index().rename(columns={"index": "player_name"})
 league_chip_record_df.index = range(1, len(league_chip_record_df) + 1)
 st.session_state['league_chip_record_df'] = league_chip_record_df
