@@ -19,7 +19,7 @@ for user in running_rank_df.columns:
     ax.plot(running_rank_df.index, ranks, marker='o', label=user)
 
     # Label the last point
-    last_x = running_rank_df.index[-1] + 0.65
+    last_x = running_rank_df.index[-1] + 0.85
     last_y = ranks[-1]
     ax.text(last_x, last_y, user, fontsize=10, va='center', ha='left')
 
