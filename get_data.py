@@ -202,3 +202,21 @@ league_chip_record_df['score_per_chip'] = round(
 league_chip_record_df = league_chip_record_df.sort_values(by='score_per_chip', ascending=False).reset_index().rename(columns={"index": "player_name"})
 league_chip_record_df.index = range(1, len(league_chip_record_df) + 1)
 st.session_state['league_chip_record_df'] = league_chip_record_df
+
+
+# Top score per gameweek
+# For each gameweek (row) find the highest score and the player who scored it
+top_scores_per_gw = player_point_history_df.max(axis=1)
+top_players_per_gw = player_point_history_df.idxmax(axis=1)
+
+top_scores_per_gw_df = pd.DataFrame({
+    'gameweek': top_scores_per_gw.index,
+    'player_name': top_players_per_gw.values,
+    'score': top_scores_per_gw.values
+})
+
+# Normalise index to 1-based sequential integers like other tables
+top_scores_per_gw_df = top_scores_per_gw_df.reset_index(drop=True)
+top_scores_per_gw_df.index = range(1, len(top_scores_per_gw_df) + 1)
+
+st.session_state['top_scores_per_gw_df'] = top_scores_per_gw_df
